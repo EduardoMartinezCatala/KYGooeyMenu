@@ -39,7 +39,7 @@
 @property(nonatomic,strong)NSMutableArray *menuImagesArray;
 
 
--(id)initWithOrigin:(CGPoint)origin andDiameter:(CGFloat)diameter andDelegate:(UIViewController *)controller themeColor:(UIColor *)themeColor;
+-(id)initWithOrigin:(CGPoint)origin andDiameter:(CGFloat)diameter andDelegate:(UIViewController *)controller themeColor:(UIColor *)themeColor crossColor:(UIColor *)crossColor andCrossLength:(CGFloat)crossLength;
 
 @property(nonatomic,weak)id<menuDidSelectedDelegate> menuDelegate;
 @end

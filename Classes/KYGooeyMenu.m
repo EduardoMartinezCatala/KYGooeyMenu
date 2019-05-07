@@ -35,13 +35,17 @@
     NSArray *values0_1_right;
     
     Cross *cross;
-    
+    UIColor *crossColor;
+    CGFloat crossLength;
     BOOL once;
 }
 
 
 
--(id)initWithOrigin:(CGPoint)origin andDiameter:(CGFloat)diameter andDelegate:(UIViewController *)controller themeColor:(UIColor *)themeColor{
+-(id)initWithOrigin:(CGPoint)origin andDiameter:(CGFloat)diameter andDelegate:(UIViewController *)controller themeColor:(UIColor *)themeColor crossColor:(UIColor *)crossColor andCrossLength:(CGFloat)crossLength{
+    
+    self->crossColor = crossColor;
+    self->crossLength = crossLength;
     menuFrame = CGRectMake(origin.x, origin.y, diameter, diameter);
     self = [super initWithFrame:menuFrame];
 
@@ -77,8 +81,8 @@
     //初始化加号
     cross = [[Cross alloc]init];
     cross.center = CGPointMake(self.mainView.bounds.size.width/2, self.mainView.bounds.size.height/2);
-    cross.bounds = CGRectMake(0, 0, menuFrame.size.width/2, menuFrame.size.width/2);
-    cross.backgroundColor = [UIColor clearColor];
+    cross.bounds = CGRectMake(0, 0, self->crossLength, self->crossLength);
+    cross.backgroundColor = crossColor;
     [self.mainView addSubview:cross];
     
     UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapToSwitchOpenOrClose)];
@@ -254,10 +258,10 @@
             item.hidden = NO;
             [UIView animateWithDuration:1.0f delay:0.05*item.tag usingSpringWithDamping:0.4f initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
                 
-                NSValue *pointValue = [PointsDic objectForKey:[NSString stringWithFormat:@"center%d",(int)item.tag]];
+                NSValue *pointValue = [self->PointsDic objectForKey:[NSString stringWithFormat:@"center%d",(int)item.tag]];
                 CGPoint terminalPoint = [pointValue CGPointValue];
                 item.center = terminalPoint;
-                cross.transform = CGAffineTransformMakeRotation(45*(M_PI/180));
+                self->cross.transform = CGAffineTransformMakeRotation(45*(M_PI/180));
                 
             } completion:nil];
         }
@@ -270,7 +274,7 @@
             [UIView animateWithDuration:0.3f delay:0.05*item.tag options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
                 CGPoint terminalPoint = self.mainView.center;
                 item.center = terminalPoint;
-                cross.transform = CGAffineTransformIdentity;
+                self->cross.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
                 item.hidden = YES;
             }];
